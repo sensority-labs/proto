@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package protocol.v1;
+package model.v1;
 
-option go_package = "./;protocol";
+option go_package = "./;model";
 
 message TrackingTimestamps {
   string block = 1;

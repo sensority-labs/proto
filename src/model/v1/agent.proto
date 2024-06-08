@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package protocol.v1;
+package model.v1;
 
-import "protocol/v1/alert.proto";
+import "model/v1/alert.proto";
 
-option go_package = "./;protocol";
+option go_package = "./;model";
 
 
 service AgentService {
