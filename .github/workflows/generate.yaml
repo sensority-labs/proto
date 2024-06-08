@@ -16,11 +16,13 @@ jobs:
       - name: Clean up
         run: rm -rf pkg/go
 
+      # generate go stubs
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-lint-action@v1
-      - name: Generating protos
-        run: buf generate
+      - run: buf generate
 
+      # generate ts stubs
+      - uses: arduino/setup-protoc@v3
       - uses: pnpm/action-setup@v4
         with:
           version: 9
