@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package network.forta;
+package protocol.v1;
 
-import public "alert.proto";
+import "protocol/v1/alert.proto";
 
 option go_package = "./;protocol";
 
 
-service Agent {
+service AgentService {
   rpc Initialize (InitializeRequest) returns (InitializeResponse) {}
   rpc EvaluateTx (EvaluateTxRequest) returns (EvaluateTxResponse) {}
   rpc EvaluateBlock (EvaluateBlockRequest) returns (EvaluateBlockResponse) {}

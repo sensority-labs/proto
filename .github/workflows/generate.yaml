@@ -6,23 +6,12 @@ on:
       - main
 
 jobs:
-  setup-build-push-deploy:
-    name: Setup, Build, and Push
+  proto_checks:
+    name: proto lint, breaking changes detection and generating stubs from protos
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
-
-      - name: Install Protoc Plugins
-        run: |
-          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
-      - name: Build Go proto definitions
-        run: |
-          mkdir -p pkg/go
-          protoc --go_out=pkg/go --go_opt=paths=source_relative --go-grpc_out=pkg/go --go-grpc_opt=paths=source_relative -I ./src ./src/*.proto
+      - uses: actions/checkout@v4
+      - uses: bufbuild/buf-setup-action@v1
+      - uses: bufbuild/buf-lint-action@v1
+      - name: Generating protos
+        run: buf generate

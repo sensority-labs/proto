@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package network.forta;
+package protocol.v1;
 
 option go_package = "./;protocol";
 
