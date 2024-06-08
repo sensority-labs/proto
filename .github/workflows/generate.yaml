@@ -15,3 +15,4 @@ jobs:
       - uses: bufbuild/buf-lint-action@v1
       - name: Generating protos
         run: buf generate
+      - uses: stefanzweifel/git-auto-commit-action@v5
