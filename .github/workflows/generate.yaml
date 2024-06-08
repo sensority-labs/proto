@@ -22,6 +22,8 @@ jobs:
         run: buf generate
 
       - uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - run: pnpm install
       - run: mkdir -p pkg/ts
       - run: pnpm run generate
