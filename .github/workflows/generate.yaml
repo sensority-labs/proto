@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  proto_checks:
+  generate:
     name: proto lint and generating stubs from protos
     runs-on: ubuntu-latest
     steps:
@@ -15,10 +15,17 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
       - name: Clean up
         run: rm -rf pkg/go
+
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-lint-action@v1
       - name: Generating protos
         run: buf generate
+
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install
+      - run: mkdir -p pkg/ts
+      - run: pnpm run generate
+
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Autogenerate stubs from protos
