@@ -4,5 +4,6 @@ managed:
 plugins:
   - remote: buf.build/protocolbuffers/go
     out: pkg/go
+    opt: paths=source_relative
 inputs:
   - directory: ./src
