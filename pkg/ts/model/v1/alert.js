@@ -28,9 +28,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.APIAlert_APIAlertAgent = exports.APIAlert = exports.Finding_IndicatorsEntry = exports.Finding_MetadataEntry = exports.Finding = exports.Source_CustomSource = exports.Source_AlertSource = exports.Source_ChainSource = exports.Source_URLSource = exports.Source_BlockSource = exports.Source_TransactionSource = exports.Source = exports.Label = exports.SignedAlert = exports.Alert_TagsEntry = exports.Alert_MetadataEntry = exports.Alert = exports.BloomFilter = exports.Signature = exports.AlertResponse = exports.ScannerInfo = exports.AgentInfo = exports.TrackingTimestamps = exports.finding_FindingTypeToJSON = exports.finding_FindingTypeFromJSON = exports.Finding_FindingType = exports.finding_SeverityToJSON = exports.finding_SeverityFromJSON = exports.Finding_Severity = exports.label_EntityTypeToJSON = exports.label_EntityTypeFromJSON = exports.Label_EntityType = exports.alertTypeToJSON = exports.alertTypeFromJSON = exports.AlertType = exports.protobufPackage = void 0;
+exports.APIAlert_APIAlertAgent = exports.APIAlert = exports.Source_CustomSource = exports.Source_AlertSource = exports.Source_ChainSource = exports.Source_URLSource = exports.Source_BlockSource = exports.Source_TransactionSource = exports.Source = exports.Label = exports.SignedAlert = exports.Alert_TagsEntry = exports.Alert_MetadataEntry = exports.Alert = exports.BloomFilter = exports.Signature = exports.AlertResponse = exports.ScannerInfo = exports.AgentInfo = exports.TrackingTimestamps = exports.label_EntityTypeToJSON = exports.label_EntityTypeFromJSON = exports.Label_EntityType = exports.alertTypeToJSON = exports.alertTypeFromJSON = exports.AlertType = exports.protobufPackage = void 0;
 /* eslint-disable */
 const _m0 = __importStar(require("protobufjs/minimal"));
+const finding_1 = require("./finding");
 const Long = require("long");
 exports.protobufPackage = "model.v1";
 var AlertType;
@@ -141,120 +142,6 @@ function label_EntityTypeToJSON(object) {
     }
 }
 exports.label_EntityTypeToJSON = label_EntityTypeToJSON;
-var Finding_Severity;
-(function (Finding_Severity) {
-    Finding_Severity[Finding_Severity["UNKNOWN"] = 0] = "UNKNOWN";
-    Finding_Severity[Finding_Severity["INFO"] = 1] = "INFO";
-    Finding_Severity[Finding_Severity["LOW"] = 2] = "LOW";
-    Finding_Severity[Finding_Severity["MEDIUM"] = 3] = "MEDIUM";
-    Finding_Severity[Finding_Severity["HIGH"] = 4] = "HIGH";
-    Finding_Severity[Finding_Severity["CRITICAL"] = 5] = "CRITICAL";
-    Finding_Severity[Finding_Severity["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
-})(Finding_Severity || (exports.Finding_Severity = Finding_Severity = {}));
-function finding_SeverityFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "UNKNOWN":
-            return Finding_Severity.UNKNOWN;
-        case 1:
-        case "INFO":
-            return Finding_Severity.INFO;
-        case 2:
-        case "LOW":
-            return Finding_Severity.LOW;
-        case 3:
-        case "MEDIUM":
-            return Finding_Severity.MEDIUM;
-        case 4:
-        case "HIGH":
-            return Finding_Severity.HIGH;
-        case 5:
-        case "CRITICAL":
-            return Finding_Severity.CRITICAL;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return Finding_Severity.UNRECOGNIZED;
-    }
-}
-exports.finding_SeverityFromJSON = finding_SeverityFromJSON;
-function finding_SeverityToJSON(object) {
-    switch (object) {
-        case Finding_Severity.UNKNOWN:
-            return "UNKNOWN";
-        case Finding_Severity.INFO:
-            return "INFO";
-        case Finding_Severity.LOW:
-            return "LOW";
-        case Finding_Severity.MEDIUM:
-            return "MEDIUM";
-        case Finding_Severity.HIGH:
-            return "HIGH";
-        case Finding_Severity.CRITICAL:
-            return "CRITICAL";
-        case Finding_Severity.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-exports.finding_SeverityToJSON = finding_SeverityToJSON;
-var Finding_FindingType;
-(function (Finding_FindingType) {
-    Finding_FindingType[Finding_FindingType["UNKNOWN_TYPE"] = 0] = "UNKNOWN_TYPE";
-    Finding_FindingType[Finding_FindingType["EXPLOIT"] = 1] = "EXPLOIT";
-    Finding_FindingType[Finding_FindingType["SUSPICIOUS"] = 2] = "SUSPICIOUS";
-    Finding_FindingType[Finding_FindingType["DEGRADED"] = 3] = "DEGRADED";
-    Finding_FindingType[Finding_FindingType["INFORMATION"] = 4] = "INFORMATION";
-    Finding_FindingType[Finding_FindingType["SCAM"] = 5] = "SCAM";
-    Finding_FindingType[Finding_FindingType["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
-})(Finding_FindingType || (exports.Finding_FindingType = Finding_FindingType = {}));
-function finding_FindingTypeFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "UNKNOWN_TYPE":
-            return Finding_FindingType.UNKNOWN_TYPE;
-        case 1:
-        case "EXPLOIT":
-            return Finding_FindingType.EXPLOIT;
-        case 2:
-        case "SUSPICIOUS":
-            return Finding_FindingType.SUSPICIOUS;
-        case 3:
-        case "DEGRADED":
-            return Finding_FindingType.DEGRADED;
-        case 4:
-        case "INFORMATION":
-            return Finding_FindingType.INFORMATION;
-        case 5:
-        case "SCAM":
-            return Finding_FindingType.SCAM;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return Finding_FindingType.UNRECOGNIZED;
-    }
-}
-exports.finding_FindingTypeFromJSON = finding_FindingTypeFromJSON;
-function finding_FindingTypeToJSON(object) {
-    switch (object) {
-        case Finding_FindingType.UNKNOWN_TYPE:
-            return "UNKNOWN_TYPE";
-        case Finding_FindingType.EXPLOIT:
-            return "EXPLOIT";
-        case Finding_FindingType.SUSPICIOUS:
-            return "SUSPICIOUS";
-        case Finding_FindingType.DEGRADED:
-            return "DEGRADED";
-        case Finding_FindingType.INFORMATION:
-            return "INFORMATION";
-        case Finding_FindingType.SCAM:
-            return "SCAM";
-        case Finding_FindingType.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-exports.finding_FindingTypeToJSON = finding_FindingTypeToJSON;
 function createBaseTrackingTimestamps() {
     return { block: "", feed: "", botRequest: "", botResponse: "", sourceAlert: "" };
 }
@@ -792,7 +679,7 @@ exports.Alert = {
             writer.uint32(16).int32(message.type);
         }
         if (message.finding !== undefined) {
-            exports.Finding.encode(message.finding, writer.uint32(26).fork()).ldelim();
+            finding_1.Finding.encode(message.finding, writer.uint32(26).fork()).ldelim();
         }
         if (message.timestamp !== "") {
             writer.uint32(34).string(message.timestamp);
@@ -843,7 +730,7 @@ exports.Alert = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.finding = exports.Finding.decode(reader, reader.uint32());
+                    message.finding = finding_1.Finding.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -911,7 +798,7 @@ exports.Alert = {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
             type: isSet(object.type) ? alertTypeFromJSON(object.type) : 0,
-            finding: isSet(object.finding) ? exports.Finding.fromJSON(object.finding) : undefined,
+            finding: isSet(object.finding) ? finding_1.Finding.fromJSON(object.finding) : undefined,
             timestamp: isSet(object.timestamp) ? globalThis.String(object.timestamp) : "",
             metadata: isObject(object.metadata)
                 ? Object.entries(object.metadata).reduce((acc, [key, value]) => {
@@ -943,7 +830,7 @@ exports.Alert = {
             obj.type = alertTypeToJSON(message.type);
         }
         if (message.finding !== undefined) {
-            obj.finding = exports.Finding.toJSON(message.finding);
+            obj.finding = finding_1.Finding.toJSON(message.finding);
         }
         if (message.timestamp !== "") {
             obj.timestamp = message.timestamp;
@@ -992,7 +879,7 @@ exports.Alert = {
         message.id = (_a = object.id) !== null && _a !== void 0 ? _a : "";
         message.type = (_b = object.type) !== null && _b !== void 0 ? _b : 0;
         message.finding = (object.finding !== undefined && object.finding !== null)
-            ? exports.Finding.fromPartial(object.finding)
+            ? finding_1.Finding.fromPartial(object.finding)
             : undefined;
         message.timestamp = (_c = object.timestamp) !== null && _c !== void 0 ? _c : "";
         message.metadata = Object.entries((_d = object.metadata) !== null && _d !== void 0 ? _d : {}).reduce((acc, [key, value]) => {
@@ -1942,450 +1829,6 @@ exports.Source_CustomSource = {
         return message;
     },
 };
-function createBaseFinding() {
-    return {
-        protocol: "",
-        severity: 0,
-        metadata: {},
-        type: 0,
-        alertId: "",
-        name: "",
-        description: "",
-        private: false,
-        addresses: [],
-        indicators: {},
-        labels: [],
-        relatedAlerts: [],
-        uniqueKey: "",
-        source: undefined,
-        timestamp: "",
-    };
-}
-exports.Finding = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.protocol !== "") {
-            writer.uint32(10).string(message.protocol);
-        }
-        if (message.severity !== 0) {
-            writer.uint32(16).int32(message.severity);
-        }
-        Object.entries(message.metadata).forEach(([key, value]) => {
-            exports.Finding_MetadataEntry.encode({ key: key, value }, writer.uint32(26).fork()).ldelim();
-        });
-        if (message.type !== 0) {
-            writer.uint32(32).int32(message.type);
-        }
-        if (message.alertId !== "") {
-            writer.uint32(42).string(message.alertId);
-        }
-        if (message.name !== "") {
-            writer.uint32(50).string(message.name);
-        }
-        if (message.description !== "") {
-            writer.uint32(58).string(message.description);
-        }
-        if (message.private !== false) {
-            writer.uint32(72).bool(message.private);
-        }
-        for (const v of message.addresses) {
-            writer.uint32(82).string(v);
-        }
-        Object.entries(message.indicators).forEach(([key, value]) => {
-            exports.Finding_IndicatorsEntry.encode({ key: key, value }, writer.uint32(90).fork()).ldelim();
-        });
-        for (const v of message.labels) {
-            exports.Label.encode(v, writer.uint32(98).fork()).ldelim();
-        }
-        for (const v of message.relatedAlerts) {
-            writer.uint32(106).string(v);
-        }
-        if (message.uniqueKey !== "") {
-            writer.uint32(114).string(message.uniqueKey);
-        }
-        if (message.source !== undefined) {
-            exports.Source.encode(message.source, writer.uint32(122).fork()).ldelim();
-        }
-        if (message.timestamp !== "") {
-            writer.uint32(130).string(message.timestamp);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseFinding();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.protocol = reader.string();
-                    continue;
-                case 2:
-                    if (tag !== 16) {
-                        break;
-                    }
-                    message.severity = reader.int32();
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    const entry3 = exports.Finding_MetadataEntry.decode(reader, reader.uint32());
-                    if (entry3.value !== undefined) {
-                        message.metadata[entry3.key] = entry3.value;
-                    }
-                    continue;
-                case 4:
-                    if (tag !== 32) {
-                        break;
-                    }
-                    message.type = reader.int32();
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.alertId = reader.string();
-                    continue;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.name = reader.string();
-                    continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.description = reader.string();
-                    continue;
-                case 9:
-                    if (tag !== 72) {
-                        break;
-                    }
-                    message.private = reader.bool();
-                    continue;
-                case 10:
-                    if (tag !== 82) {
-                        break;
-                    }
-                    message.addresses.push(reader.string());
-                    continue;
-                case 11:
-                    if (tag !== 90) {
-                        break;
-                    }
-                    const entry11 = exports.Finding_IndicatorsEntry.decode(reader, reader.uint32());
-                    if (entry11.value !== undefined) {
-                        message.indicators[entry11.key] = entry11.value;
-                    }
-                    continue;
-                case 12:
-                    if (tag !== 98) {
-                        break;
-                    }
-                    message.labels.push(exports.Label.decode(reader, reader.uint32()));
-                    continue;
-                case 13:
-                    if (tag !== 106) {
-                        break;
-                    }
-                    message.relatedAlerts.push(reader.string());
-                    continue;
-                case 14:
-                    if (tag !== 114) {
-                        break;
-                    }
-                    message.uniqueKey = reader.string();
-                    continue;
-                case 15:
-                    if (tag !== 122) {
-                        break;
-                    }
-                    message.source = exports.Source.decode(reader, reader.uint32());
-                    continue;
-                case 16:
-                    if (tag !== 130) {
-                        break;
-                    }
-                    message.timestamp = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            protocol: isSet(object.protocol) ? globalThis.String(object.protocol) : "",
-            severity: isSet(object.severity) ? finding_SeverityFromJSON(object.severity) : 0,
-            metadata: isObject(object.metadata)
-                ? Object.entries(object.metadata).reduce((acc, [key, value]) => {
-                    acc[key] = String(value);
-                    return acc;
-                }, {})
-                : {},
-            type: isSet(object.type) ? finding_FindingTypeFromJSON(object.type) : 0,
-            alertId: isSet(object.alertId) ? globalThis.String(object.alertId) : "",
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            private: isSet(object.private) ? globalThis.Boolean(object.private) : false,
-            addresses: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.addresses)
-                ? object.addresses.map((e) => globalThis.String(e))
-                : [],
-            indicators: isObject(object.indicators)
-                ? Object.entries(object.indicators).reduce((acc, [key, value]) => {
-                    acc[key] = Number(value);
-                    return acc;
-                }, {})
-                : {},
-            labels: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.labels) ? object.labels.map((e) => exports.Label.fromJSON(e)) : [],
-            relatedAlerts: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.relatedAlerts)
-                ? object.relatedAlerts.map((e) => globalThis.String(e))
-                : [],
-            uniqueKey: isSet(object.uniqueKey) ? globalThis.String(object.uniqueKey) : "",
-            source: isSet(object.source) ? exports.Source.fromJSON(object.source) : undefined,
-            timestamp: isSet(object.timestamp) ? globalThis.String(object.timestamp) : "",
-        };
-    },
-    toJSON(message) {
-        var _a, _b, _c;
-        const obj = {};
-        if (message.protocol !== "") {
-            obj.protocol = message.protocol;
-        }
-        if (message.severity !== 0) {
-            obj.severity = finding_SeverityToJSON(message.severity);
-        }
-        if (message.metadata) {
-            const entries = Object.entries(message.metadata);
-            if (entries.length > 0) {
-                obj.metadata = {};
-                entries.forEach(([k, v]) => {
-                    obj.metadata[k] = v;
-                });
-            }
-        }
-        if (message.type !== 0) {
-            obj.type = finding_FindingTypeToJSON(message.type);
-        }
-        if (message.alertId !== "") {
-            obj.alertId = message.alertId;
-        }
-        if (message.name !== "") {
-            obj.name = message.name;
-        }
-        if (message.description !== "") {
-            obj.description = message.description;
-        }
-        if (message.private !== false) {
-            obj.private = message.private;
-        }
-        if ((_a = message.addresses) === null || _a === void 0 ? void 0 : _a.length) {
-            obj.addresses = message.addresses;
-        }
-        if (message.indicators) {
-            const entries = Object.entries(message.indicators);
-            if (entries.length > 0) {
-                obj.indicators = {};
-                entries.forEach(([k, v]) => {
-                    obj.indicators[k] = v;
-                });
-            }
-        }
-        if ((_b = message.labels) === null || _b === void 0 ? void 0 : _b.length) {
-            obj.labels = message.labels.map((e) => exports.Label.toJSON(e));
-        }
-        if ((_c = message.relatedAlerts) === null || _c === void 0 ? void 0 : _c.length) {
-            obj.relatedAlerts = message.relatedAlerts;
-        }
-        if (message.uniqueKey !== "") {
-            obj.uniqueKey = message.uniqueKey;
-        }
-        if (message.source !== undefined) {
-            obj.source = exports.Source.toJSON(message.source);
-        }
-        if (message.timestamp !== "") {
-            obj.timestamp = message.timestamp;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.Finding.fromPartial(base !== null && base !== void 0 ? base : {});
-    },
-    fromPartial(object) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
-        const message = createBaseFinding();
-        message.protocol = (_a = object.protocol) !== null && _a !== void 0 ? _a : "";
-        message.severity = (_b = object.severity) !== null && _b !== void 0 ? _b : 0;
-        message.metadata = Object.entries((_c = object.metadata) !== null && _c !== void 0 ? _c : {}).reduce((acc, [key, value]) => {
-            if (value !== undefined) {
-                acc[key] = globalThis.String(value);
-            }
-            return acc;
-        }, {});
-        message.type = (_d = object.type) !== null && _d !== void 0 ? _d : 0;
-        message.alertId = (_e = object.alertId) !== null && _e !== void 0 ? _e : "";
-        message.name = (_f = object.name) !== null && _f !== void 0 ? _f : "";
-        message.description = (_g = object.description) !== null && _g !== void 0 ? _g : "";
-        message.private = (_h = object.private) !== null && _h !== void 0 ? _h : false;
-        message.addresses = ((_j = object.addresses) === null || _j === void 0 ? void 0 : _j.map((e) => e)) || [];
-        message.indicators = Object.entries((_k = object.indicators) !== null && _k !== void 0 ? _k : {}).reduce((acc, [key, value]) => {
-            if (value !== undefined) {
-                acc[key] = globalThis.Number(value);
-            }
-            return acc;
-        }, {});
-        message.labels = ((_l = object.labels) === null || _l === void 0 ? void 0 : _l.map((e) => exports.Label.fromPartial(e))) || [];
-        message.relatedAlerts = ((_m = object.relatedAlerts) === null || _m === void 0 ? void 0 : _m.map((e) => e)) || [];
-        message.uniqueKey = (_o = object.uniqueKey) !== null && _o !== void 0 ? _o : "";
-        message.source = (object.source !== undefined && object.source !== null)
-            ? exports.Source.fromPartial(object.source)
-            : undefined;
-        message.timestamp = (_p = object.timestamp) !== null && _p !== void 0 ? _p : "";
-        return message;
-    },
-};
-function createBaseFinding_MetadataEntry() {
-    return { key: "", value: "" };
-}
-exports.Finding_MetadataEntry = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.key !== "") {
-            writer.uint32(10).string(message.key);
-        }
-        if (message.value !== "") {
-            writer.uint32(18).string(message.value);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseFinding_MetadataEntry();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.key = reader.string();
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.value = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? globalThis.String(object.value) : "",
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.key !== "") {
-            obj.key = message.key;
-        }
-        if (message.value !== "") {
-            obj.value = message.value;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.Finding_MetadataEntry.fromPartial(base !== null && base !== void 0 ? base : {});
-    },
-    fromPartial(object) {
-        var _a, _b;
-        const message = createBaseFinding_MetadataEntry();
-        message.key = (_a = object.key) !== null && _a !== void 0 ? _a : "";
-        message.value = (_b = object.value) !== null && _b !== void 0 ? _b : "";
-        return message;
-    },
-};
-function createBaseFinding_IndicatorsEntry() {
-    return { key: "", value: 0 };
-}
-exports.Finding_IndicatorsEntry = {
-    encode(message, writer = _m0.Writer.create()) {
-        if (message.key !== "") {
-            writer.uint32(10).string(message.key);
-        }
-        if (message.value !== 0) {
-            writer.uint32(17).double(message.value);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseFinding_IndicatorsEntry();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.key = reader.string();
-                    continue;
-                case 2:
-                    if (tag !== 17) {
-                        break;
-                    }
-                    message.value = reader.double();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skipType(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.key !== "") {
-            obj.key = message.key;
-        }
-        if (message.value !== 0) {
-            obj.value = message.value;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.Finding_IndicatorsEntry.fromPartial(base !== null && base !== void 0 ? base : {});
-    },
-    fromPartial(object) {
-        var _a, _b;
-        const message = createBaseFinding_IndicatorsEntry();
-        message.key = (_a = object.key) !== null && _a !== void 0 ? _a : "";
-        message.value = (_b = object.value) !== null && _b !== void 0 ? _b : 0;
-        return message;
-    },
-};
 function createBaseAPIAlert() {
     return { id: "", type: 0, finding: undefined, agent: undefined, timestamp: "" };
 }
@@ -2398,7 +1841,7 @@ exports.APIAlert = {
             writer.uint32(16).int32(message.type);
         }
         if (message.finding !== undefined) {
-            exports.Finding.encode(message.finding, writer.uint32(26).fork()).ldelim();
+            finding_1.Finding.encode(message.finding, writer.uint32(26).fork()).ldelim();
         }
         if (message.agent !== undefined) {
             exports.APIAlert_APIAlertAgent.encode(message.agent, writer.uint32(34).fork()).ldelim();
@@ -2431,7 +1874,7 @@ exports.APIAlert = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.finding = exports.Finding.decode(reader, reader.uint32());
+                    message.finding = finding_1.Finding.decode(reader, reader.uint32());
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -2457,7 +1900,7 @@ exports.APIAlert = {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
             type: isSet(object.type) ? alertTypeFromJSON(object.type) : 0,
-            finding: isSet(object.finding) ? exports.Finding.fromJSON(object.finding) : undefined,
+            finding: isSet(object.finding) ? finding_1.Finding.fromJSON(object.finding) : undefined,
             agent: isSet(object.agent) ? exports.APIAlert_APIAlertAgent.fromJSON(object.agent) : undefined,
             timestamp: isSet(object.timestamp) ? globalThis.String(object.timestamp) : "",
         };
@@ -2471,7 +1914,7 @@ exports.APIAlert = {
             obj.type = alertTypeToJSON(message.type);
         }
         if (message.finding !== undefined) {
-            obj.finding = exports.Finding.toJSON(message.finding);
+            obj.finding = finding_1.Finding.toJSON(message.finding);
         }
         if (message.agent !== undefined) {
             obj.agent = exports.APIAlert_APIAlertAgent.toJSON(message.agent);
@@ -2490,7 +1933,7 @@ exports.APIAlert = {
         message.id = (_a = object.id) !== null && _a !== void 0 ? _a : "";
         message.type = (_b = object.type) !== null && _b !== void 0 ? _b : 0;
         message.finding = (object.finding !== undefined && object.finding !== null)
-            ? exports.Finding.fromPartial(object.finding)
+            ? finding_1.Finding.fromPartial(object.finding)
             : undefined;
         message.agent = (object.agent !== undefined && object.agent !== null)
             ? exports.APIAlert_APIAlertAgent.fromPartial(object.agent)

@@ -6,7 +6,8 @@
 
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { BloomFilter, Finding, TrackingTimestamps } from "./alert";
+import { BloomFilter, TrackingTimestamps } from "./alert";
+import { Finding } from "./finding";
 import Long = require("long");
 
 export const protobufPackage = "model.v1";

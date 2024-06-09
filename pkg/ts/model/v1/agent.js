@@ -33,6 +33,7 @@ exports.AgentServiceClientImpl = exports.AgentServiceServiceName = exports.Alert
 /* eslint-disable */
 const _m0 = __importStar(require("protobufjs/minimal"));
 const alert_1 = require("./alert");
+const finding_1 = require("./finding");
 const Long = require("long");
 exports.protobufPackage = "model.v1";
 var ResponseStatus;
@@ -944,7 +945,7 @@ exports.EvaluateTxResponse = {
             exports.Error.encode(v, writer.uint32(18).fork()).ldelim();
         }
         for (const v of message.findings) {
-            alert_1.Finding.encode(v, writer.uint32(26).fork()).ldelim();
+            finding_1.Finding.encode(v, writer.uint32(26).fork()).ldelim();
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             exports.EvaluateTxResponse_MetadataEntry.encode({ key: key, value }, writer.uint32(34).fork()).ldelim();
@@ -983,7 +984,7 @@ exports.EvaluateTxResponse = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.findings.push(alert_1.Finding.decode(reader, reader.uint32()));
+                    message.findings.push(finding_1.Finding.decode(reader, reader.uint32()));
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -1024,7 +1025,7 @@ exports.EvaluateTxResponse = {
         return {
             status: isSet(object.status) ? responseStatusFromJSON(object.status) : 0,
             errors: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.errors) ? object.errors.map((e) => exports.Error.fromJSON(e)) : [],
-            findings: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.findings) ? object.findings.map((e) => alert_1.Finding.fromJSON(e)) : [],
+            findings: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.findings) ? object.findings.map((e) => finding_1.Finding.fromJSON(e)) : [],
             metadata: isObject(object.metadata)
                 ? Object.entries(object.metadata).reduce((acc, [key, value]) => {
                     acc[key] = String(value);
@@ -1046,7 +1047,7 @@ exports.EvaluateTxResponse = {
             obj.errors = message.errors.map((e) => exports.Error.toJSON(e));
         }
         if ((_b = message.findings) === null || _b === void 0 ? void 0 : _b.length) {
-            obj.findings = message.findings.map((e) => alert_1.Finding.toJSON(e));
+            obj.findings = message.findings.map((e) => finding_1.Finding.toJSON(e));
         }
         if (message.metadata) {
             const entries = Object.entries(message.metadata);
@@ -1076,7 +1077,7 @@ exports.EvaluateTxResponse = {
         const message = createBaseEvaluateTxResponse();
         message.status = (_a = object.status) !== null && _a !== void 0 ? _a : 0;
         message.errors = ((_b = object.errors) === null || _b === void 0 ? void 0 : _b.map((e) => exports.Error.fromPartial(e))) || [];
-        message.findings = ((_c = object.findings) === null || _c === void 0 ? void 0 : _c.map((e) => alert_1.Finding.fromPartial(e))) || [];
+        message.findings = ((_c = object.findings) === null || _c === void 0 ? void 0 : _c.map((e) => finding_1.Finding.fromPartial(e))) || [];
         message.metadata = Object.entries((_d = object.metadata) !== null && _d !== void 0 ? _d : {}).reduce((acc, [key, value]) => {
             if (value !== undefined) {
                 acc[key] = globalThis.String(value);
@@ -1168,7 +1169,7 @@ exports.EvaluateBlockResponse = {
             exports.Error.encode(v, writer.uint32(18).fork()).ldelim();
         }
         for (const v of message.findings) {
-            alert_1.Finding.encode(v, writer.uint32(26).fork()).ldelim();
+            finding_1.Finding.encode(v, writer.uint32(26).fork()).ldelim();
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             exports.EvaluateBlockResponse_MetadataEntry.encode({ key: key, value }, writer.uint32(34).fork()).ldelim();
@@ -1207,7 +1208,7 @@ exports.EvaluateBlockResponse = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.findings.push(alert_1.Finding.decode(reader, reader.uint32()));
+                    message.findings.push(finding_1.Finding.decode(reader, reader.uint32()));
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -1248,7 +1249,7 @@ exports.EvaluateBlockResponse = {
         return {
             status: isSet(object.status) ? responseStatusFromJSON(object.status) : 0,
             errors: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.errors) ? object.errors.map((e) => exports.Error.fromJSON(e)) : [],
-            findings: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.findings) ? object.findings.map((e) => alert_1.Finding.fromJSON(e)) : [],
+            findings: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.findings) ? object.findings.map((e) => finding_1.Finding.fromJSON(e)) : [],
             metadata: isObject(object.metadata)
                 ? Object.entries(object.metadata).reduce((acc, [key, value]) => {
                     acc[key] = String(value);
@@ -1270,7 +1271,7 @@ exports.EvaluateBlockResponse = {
             obj.errors = message.errors.map((e) => exports.Error.toJSON(e));
         }
         if ((_b = message.findings) === null || _b === void 0 ? void 0 : _b.length) {
-            obj.findings = message.findings.map((e) => alert_1.Finding.toJSON(e));
+            obj.findings = message.findings.map((e) => finding_1.Finding.toJSON(e));
         }
         if (message.metadata) {
             const entries = Object.entries(message.metadata);
@@ -1300,7 +1301,7 @@ exports.EvaluateBlockResponse = {
         const message = createBaseEvaluateBlockResponse();
         message.status = (_a = object.status) !== null && _a !== void 0 ? _a : 0;
         message.errors = ((_b = object.errors) === null || _b === void 0 ? void 0 : _b.map((e) => exports.Error.fromPartial(e))) || [];
-        message.findings = ((_c = object.findings) === null || _c === void 0 ? void 0 : _c.map((e) => alert_1.Finding.fromPartial(e))) || [];
+        message.findings = ((_c = object.findings) === null || _c === void 0 ? void 0 : _c.map((e) => finding_1.Finding.fromPartial(e))) || [];
         message.metadata = Object.entries((_d = object.metadata) !== null && _d !== void 0 ? _d : {}).reduce((acc, [key, value]) => {
             if (value !== undefined) {
                 acc[key] = globalThis.String(value);
@@ -1392,7 +1393,7 @@ exports.EvaluateAlertResponse = {
             exports.Error.encode(v, writer.uint32(18).fork()).ldelim();
         }
         for (const v of message.findings) {
-            alert_1.Finding.encode(v, writer.uint32(26).fork()).ldelim();
+            finding_1.Finding.encode(v, writer.uint32(26).fork()).ldelim();
         }
         Object.entries(message.metadata).forEach(([key, value]) => {
             exports.EvaluateAlertResponse_MetadataEntry.encode({ key: key, value }, writer.uint32(34).fork()).ldelim();
@@ -1431,7 +1432,7 @@ exports.EvaluateAlertResponse = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.findings.push(alert_1.Finding.decode(reader, reader.uint32()));
+                    message.findings.push(finding_1.Finding.decode(reader, reader.uint32()));
                     continue;
                 case 4:
                     if (tag !== 34) {
@@ -1472,7 +1473,7 @@ exports.EvaluateAlertResponse = {
         return {
             status: isSet(object.status) ? responseStatusFromJSON(object.status) : 0,
             errors: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.errors) ? object.errors.map((e) => exports.Error.fromJSON(e)) : [],
-            findings: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.findings) ? object.findings.map((e) => alert_1.Finding.fromJSON(e)) : [],
+            findings: globalThis.Array.isArray(object === null || object === void 0 ? void 0 : object.findings) ? object.findings.map((e) => finding_1.Finding.fromJSON(e)) : [],
             metadata: isObject(object.metadata)
                 ? Object.entries(object.metadata).reduce((acc, [key, value]) => {
                     acc[key] = String(value);
@@ -1494,7 +1495,7 @@ exports.EvaluateAlertResponse = {
             obj.errors = message.errors.map((e) => exports.Error.toJSON(e));
         }
         if ((_b = message.findings) === null || _b === void 0 ? void 0 : _b.length) {
-            obj.findings = message.findings.map((e) => alert_1.Finding.toJSON(e));
+            obj.findings = message.findings.map((e) => finding_1.Finding.toJSON(e));
         }
         if (message.metadata) {
             const entries = Object.entries(message.metadata);
@@ -1524,7 +1525,7 @@ exports.EvaluateAlertResponse = {
         const message = createBaseEvaluateAlertResponse();
         message.status = (_a = object.status) !== null && _a !== void 0 ? _a : 0;
         message.errors = ((_b = object.errors) === null || _b === void 0 ? void 0 : _b.map((e) => exports.Error.fromPartial(e))) || [];
-        message.findings = ((_c = object.findings) === null || _c === void 0 ? void 0 : _c.map((e) => alert_1.Finding.fromPartial(e))) || [];
+        message.findings = ((_c = object.findings) === null || _c === void 0 ? void 0 : _c.map((e) => finding_1.Finding.fromPartial(e))) || [];
         message.metadata = Object.entries((_d = object.metadata) !== null && _d !== void 0 ? _d : {}).reduce((acc, [key, value]) => {
             if (value !== undefined) {
                 acc[key] = globalThis.String(value);
