@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "author": "Ivan Feofanov",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "generate": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./pkg/ts --ts_proto_opt=esModuleInterop=true  -I=./src/  $(find ./src/ -iname \"*.proto\")"
   },
