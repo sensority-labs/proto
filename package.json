@@ -5,7 +5,7 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "generate": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./pkg/ts -I=./src/  $(find ./src/ -iname \"*.proto\")"
+    "generate": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./pkg/ts --ts_proto_opt=esModuleInterop=true -I=./src/  $(find ./src/ -iname \"*.proto\")"
   },
   "dependencies": {
     "ts-proto": "^1.178.0"

@@ -16,17 +16,10 @@ jobs:
       - name: Clean up
         run: rm -rf pkg/go
 
-      # generate go stubs
+      # generate stubs
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-lint-action@v1
       - run: buf generate
-
-      # generate ts stubs
-      - uses: arduino/setup-protoc@v3
-      - uses: actions/setup-node@v4
-      - run: npm install
-      - run: mkdir -p pkg/ts
-      - run: npm run generate
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
