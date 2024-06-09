@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package model.v1;
+
+option go_package = "./;model";
+
+message Finding {
+  enum Severity {
+    UNKNOWN = 0;
+    INFO = 1;
+    LOW = 2;
+    MEDIUM = 3;
+    HIGH = 4;
+    CRITICAL = 5;
+  }
+
+  enum FindingType {
+    UNKNOWN_TYPE = 0;
+    EXPLOIT = 1;
+    SUSPICIOUS = 2;
+    DEGRADED = 3;
+    INFORMATION = 4;
+    SCAM = 5;
+  }
+
+  string protocol = 1;
+  Severity severity = 2;
+  map<string, string> metadata = 3;
+  FindingType type = 4;
+  string alertId = 5;
+  string name = 6;
+  string description = 7;
+  string timestamp = 8;
+  string uniqueKey = 9;
+}

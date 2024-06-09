@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package model.v1;
 
+import "model/v1/finding.proto";
+
 option go_package = "./;model";
 
 message TrackingTimestamps {
@@ -129,43 +131,6 @@ message Source {
   repeated ChainSource chains = 4;
   repeated AlertSource alerts = 5;
   repeated CustomSource customSources = 6;
-}
-
-message Finding {
-  enum Severity {
-    UNKNOWN = 0;
-    INFO = 1;
-    LOW = 2;
-    MEDIUM = 3;
-    HIGH = 4;
-    CRITICAL = 5;
-  }
-
-  enum FindingType {
-    UNKNOWN_TYPE = 0;
-    EXPLOIT = 1;
-    SUSPICIOUS = 2;
-    DEGRADED = 3;
-    INFORMATION = 4;
-    SCAM = 5;
-  }
-
-  string protocol = 1;
-  Severity severity = 2;
-  map<string, string> metadata = 3;
-  FindingType type = 4;
-  string alertId = 5;
-  string name = 6;
-  string description = 7;
-  reserved 8;
-  bool private = 9;
-  repeated string addresses = 10;
-  map<string, double> indicators = 11;
-  repeated Label labels = 12;
-  repeated string relatedAlerts = 13;
-  string uniqueKey = 14;
-  Source source = 15;
-  string timestamp = 16;
 }
 
 message APIAlert {
