@@ -5,8 +5,8 @@
 // source: model/v1/alert.proto
 
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal.js";
-import Long = require("long");
+import Long from "long";
+import _m0 from "protobufjs/minimal.js";
 
 export const protobufPackage = "model.v1";
 

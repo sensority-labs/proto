@@ -5,9 +5,9 @@
 // source: model/v1/agent.proto
 
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal.js";
+import Long from "long";
+import _m0 from "protobufjs/minimal.js";
 import { BloomFilter, Finding, TrackingTimestamps } from "./alert.js";
-import Long = require("long");
 
 export const protobufPackage = "model.v1";
 
