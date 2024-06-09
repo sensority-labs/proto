@@ -20,6 +20,8 @@ jobs:
       - uses: bufbuild/buf-setup-action@v1
       - uses: bufbuild/buf-lint-action@v1
       - run: buf generate
+      # compile typescript
+      - run: tsc
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
