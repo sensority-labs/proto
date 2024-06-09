@@ -4,6 +4,8 @@
   "author": "Ivan Feofanov",
   "license": "ISC",
   "dependencies": {
+    "long": "^5.2.3",
+    "protobufjs": "^7.3.0",
     "typescript": "^5.4.5"
   }
 }
