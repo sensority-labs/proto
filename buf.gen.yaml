@@ -7,8 +7,5 @@ plugins:
     opt: paths=source_relative
   - remote: buf.build/community/stephenh-ts-proto
     out: pkg/ts
-#    opt:
-#      - esModuleInterop=true
-#      - importSuffix=.js
 inputs:
   - directory: ./src

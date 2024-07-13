@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package model.v1;
+
+option go_package = "./;model";
+
+
+message BlockEvent {
+  message Network {
+    string chainId = 1;
+  }
+
+  message Block {
+    string difficulty = 1;
+    string extraData = 2;
+    string gasLimit = 3;
+    string gasUsed = 4;
+    string hash = 5;
+    string logsBloom = 6;
+    string miner = 7;
+    string mixHash = 8;
+    string nonce = 9;
+    string number = 10;
+    string parentHash = 11;
+    string receiptsRoot = 12;
+    string sha3Uncles = 13;
+    string size = 14;
+    string stateRoot = 15;
+    string timestamp = 16;
+    string totalDifficulty = 17;
+    repeated string transactions = 18;
+    string transactionsRoot = 19;
+    repeated string uncles = 20;
+    string baseFeePerGas = 21;
+  }
+
+  string blockHash = 1;
+  string blockNumber = 2;
+  Network network = 3;
+  Block block = 4;
+}
+
+message TransactionEvent {
+
+  message Network {
+    string chainId = 1;
+  }
+
+  message Block {
+    string blockHash = 1;
+    string blockNumber = 2;
+    string blockTimestamp = 3;
+    string baseFeePerGas = 4;
+  }
+
+  message Transaction {
+    string type = 1;
+    string nonce = 2;
+    string gasPrice = 3;
+    string gas = 4;
+    string value = 5;
+    string input = 6;
+    string v = 7;
+    string r = 8;
+    string s = 9;
+    string to = 10;
+    string hash = 11;
+    string from = 12;
+    string maxFeePerGas = 13;
+    string maxPriorityFeePerGas = 14;
+  }
+
+  message Log {
+    string address = 1;
+    repeated string topics = 2;
+    string data = 3;
+    string blockNumber = 4;
+    string transactionHash = 5;
+    string transactionIndex = 6;
+    string blockHash = 7;
+    string logIndex = 8;
+    bool removed = 9;
+  }
+
+  Transaction transaction = 1;
+  Network network = 2;
+  map<string, bool> addresses = 3;
+  Block block = 4;
+  repeated Log logs = 5;
+  bool isContractDeployment = 6;
+  string contractAddress = 7;
+  map<string, bool> txAddresses = 8;
+}

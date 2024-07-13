@@ -1,3 +1,3 @@
-module github.com/Ivan-Feofanov/proto
+module github.com/sensority-labs/proto
 
 go 1.22

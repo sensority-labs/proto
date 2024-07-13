@@ -1,8 +1,8 @@
 {
   "name": "proto",
   "version": "0.0.1",
-  "author": "Ivan Feofanov",
-  "license": "ISC",
+  "author": "sensority-labs",
+  "license": "MIT",
   "dependencies": {
     "long": "^5.2.3",
     "protobufjs": "^7.3.0",
