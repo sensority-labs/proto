@@ -32,4 +32,10 @@ message Finding {
   string description = 7;
   string timestamp = 8;
   string uniqueKey = 9;
+  RouteInfo routeInfo = 10;
+}
+
+message RouteInfo {
+  string userName = 1;
+  string botName = 2;
 }
