@@ -4,8 +4,8 @@
   "author": "sensority-labs",
   "license": "MIT",
   "dependencies": {
+    "@bufbuild/protobuf": "^2.2.2",
     "long": "^5.2.3",
-    "protobufjs": "^7.3.0",
     "typescript": "^5.4.5"
   }
 }
