@@ -2,8 +2,8 @@ name: Build and push gRPC files
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   generate:
