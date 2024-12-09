@@ -93,10 +93,6 @@ export interface TransactionEvent_TxAddressesEntry {
   value: boolean;
 }
 
-export interface BigInt {
-  bytes: Uint8Array;
-}
-
 export interface TransactionLog {
   address: string;
   topics: string[];
@@ -110,14 +106,14 @@ export interface TransactionLog {
 }
 
 export interface TransactionReceipt {
-  blobGasUsed?: BigInt | undefined;
+  blobGasUsed?: number | undefined;
   blockHash: string;
   blockNumber: number;
   contractAddress?: string | undefined;
-  cumulativeGasUsed: BigInt | undefined;
-  effectiveGasPrice: BigInt | undefined;
+  cumulativeGasUsed: number;
+  effectiveGasPrice: number;
   from: string;
-  gasUsed: BigInt | undefined;
+  gasUsed: number;
   logs: TransactionLog[];
   logsBloom: string;
   root?: string | undefined;
@@ -1540,64 +1536,6 @@ export const TransactionEvent_TxAddressesEntry: MessageFns<TransactionEvent_TxAd
   },
 };
 
-function createBaseBigInt(): BigInt {
-  return { bytes: new Uint8Array(0) };
-}
-
-export const BigInt: MessageFns<BigInt> = {
-  encode(message: BigInt, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.bytes.length !== 0) {
-      writer.uint32(10).bytes(message.bytes);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): BigInt {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBigInt();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.bytes = reader.bytes();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): BigInt {
-    return { bytes: isSet(object.bytes) ? bytesFromBase64(object.bytes) : new Uint8Array(0) };
-  },
-
-  toJSON(message: BigInt): unknown {
-    const obj: any = {};
-    if (message.bytes.length !== 0) {
-      obj.bytes = base64FromBytes(message.bytes);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<BigInt>, I>>(base?: I): BigInt {
-    return BigInt.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<BigInt>, I>>(object: I): BigInt {
-    const message = createBaseBigInt();
-    message.bytes = object.bytes ?? new Uint8Array(0);
-    return message;
-  },
-};
-
 function createBaseTransactionLog(): TransactionLog {
   return {
     address: "",
@@ -1802,10 +1740,10 @@ function createBaseTransactionReceipt(): TransactionReceipt {
     blockHash: "",
     blockNumber: 0,
     contractAddress: undefined,
-    cumulativeGasUsed: undefined,
-    effectiveGasPrice: undefined,
+    cumulativeGasUsed: 0,
+    effectiveGasPrice: 0,
     from: "",
-    gasUsed: undefined,
+    gasUsed: 0,
     logs: [],
     logsBloom: "",
     root: undefined,
@@ -1820,7 +1758,7 @@ function createBaseTransactionReceipt(): TransactionReceipt {
 export const TransactionReceipt: MessageFns<TransactionReceipt> = {
   encode(message: TransactionReceipt, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.blobGasUsed !== undefined) {
-      BigInt.encode(message.blobGasUsed, writer.uint32(10).fork()).join();
+      writer.uint32(8).uint64(message.blobGasUsed);
     }
     if (message.blockHash !== "") {
       writer.uint32(18).string(message.blockHash);
@@ -1831,17 +1769,17 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
     if (message.contractAddress !== undefined) {
       writer.uint32(34).string(message.contractAddress);
     }
-    if (message.cumulativeGasUsed !== undefined) {
-      BigInt.encode(message.cumulativeGasUsed, writer.uint32(42).fork()).join();
+    if (message.cumulativeGasUsed !== 0) {
+      writer.uint32(40).uint64(message.cumulativeGasUsed);
     }
-    if (message.effectiveGasPrice !== undefined) {
-      BigInt.encode(message.effectiveGasPrice, writer.uint32(50).fork()).join();
+    if (message.effectiveGasPrice !== 0) {
+      writer.uint32(48).uint64(message.effectiveGasPrice);
     }
     if (message.from !== "") {
       writer.uint32(58).string(message.from);
     }
-    if (message.gasUsed !== undefined) {
-      BigInt.encode(message.gasUsed, writer.uint32(66).fork()).join();
+    if (message.gasUsed !== 0) {
+      writer.uint32(64).uint64(message.gasUsed);
     }
     for (const v of message.logs) {
       TransactionLog.encode(v!, writer.uint32(74).fork()).join();
@@ -1878,11 +1816,11 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.blobGasUsed = BigInt.decode(reader, reader.uint32());
+          message.blobGasUsed = longToNumber(reader.uint64());
           continue;
         }
         case 2: {
@@ -1910,19 +1848,19 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
           continue;
         }
         case 5: {
-          if (tag !== 42) {
+          if (tag !== 40) {
             break;
           }
 
-          message.cumulativeGasUsed = BigInt.decode(reader, reader.uint32());
+          message.cumulativeGasUsed = longToNumber(reader.uint64());
           continue;
         }
         case 6: {
-          if (tag !== 50) {
+          if (tag !== 48) {
             break;
           }
 
-          message.effectiveGasPrice = BigInt.decode(reader, reader.uint32());
+          message.effectiveGasPrice = longToNumber(reader.uint64());
           continue;
         }
         case 7: {
@@ -1934,11 +1872,11 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
           continue;
         }
         case 8: {
-          if (tag !== 66) {
+          if (tag !== 64) {
             break;
           }
 
-          message.gasUsed = BigInt.decode(reader, reader.uint32());
+          message.gasUsed = longToNumber(reader.uint64());
           continue;
         }
         case 9: {
@@ -2016,14 +1954,14 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
 
   fromJSON(object: any): TransactionReceipt {
     return {
-      blobGasUsed: isSet(object.blobGasUsed) ? BigInt.fromJSON(object.blobGasUsed) : undefined,
+      blobGasUsed: isSet(object.blobGasUsed) ? gt.Number(object.blobGasUsed) : undefined,
       blockHash: isSet(object.blockHash) ? gt.String(object.blockHash) : "",
       blockNumber: isSet(object.blockNumber) ? gt.Number(object.blockNumber) : 0,
       contractAddress: isSet(object.contractAddress) ? gt.String(object.contractAddress) : undefined,
-      cumulativeGasUsed: isSet(object.cumulativeGasUsed) ? BigInt.fromJSON(object.cumulativeGasUsed) : undefined,
-      effectiveGasPrice: isSet(object.effectiveGasPrice) ? BigInt.fromJSON(object.effectiveGasPrice) : undefined,
+      cumulativeGasUsed: isSet(object.cumulativeGasUsed) ? gt.Number(object.cumulativeGasUsed) : 0,
+      effectiveGasPrice: isSet(object.effectiveGasPrice) ? gt.Number(object.effectiveGasPrice) : 0,
       from: isSet(object.from) ? gt.String(object.from) : "",
-      gasUsed: isSet(object.gasUsed) ? BigInt.fromJSON(object.gasUsed) : undefined,
+      gasUsed: isSet(object.gasUsed) ? gt.Number(object.gasUsed) : 0,
       logs: gt.Array.isArray(object?.logs) ? object.logs.map((e: any) => TransactionLog.fromJSON(e)) : [],
       logsBloom: isSet(object.logsBloom) ? gt.String(object.logsBloom) : "",
       root: isSet(object.root) ? gt.String(object.root) : undefined,
@@ -2038,7 +1976,7 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
   toJSON(message: TransactionReceipt): unknown {
     const obj: any = {};
     if (message.blobGasUsed !== undefined) {
-      obj.blobGasUsed = BigInt.toJSON(message.blobGasUsed);
+      obj.blobGasUsed = Math.round(message.blobGasUsed);
     }
     if (message.blockHash !== "") {
       obj.blockHash = message.blockHash;
@@ -2049,17 +1987,17 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
     if (message.contractAddress !== undefined) {
       obj.contractAddress = message.contractAddress;
     }
-    if (message.cumulativeGasUsed !== undefined) {
-      obj.cumulativeGasUsed = BigInt.toJSON(message.cumulativeGasUsed);
+    if (message.cumulativeGasUsed !== 0) {
+      obj.cumulativeGasUsed = Math.round(message.cumulativeGasUsed);
     }
-    if (message.effectiveGasPrice !== undefined) {
-      obj.effectiveGasPrice = BigInt.toJSON(message.effectiveGasPrice);
+    if (message.effectiveGasPrice !== 0) {
+      obj.effectiveGasPrice = Math.round(message.effectiveGasPrice);
     }
     if (message.from !== "") {
       obj.from = message.from;
     }
-    if (message.gasUsed !== undefined) {
-      obj.gasUsed = BigInt.toJSON(message.gasUsed);
+    if (message.gasUsed !== 0) {
+      obj.gasUsed = Math.round(message.gasUsed);
     }
     if (message.logs?.length) {
       obj.logs = message.logs.map((e) => TransactionLog.toJSON(e));
@@ -2093,22 +2031,14 @@ export const TransactionReceipt: MessageFns<TransactionReceipt> = {
   },
   fromPartial<I extends Exact<DeepPartial<TransactionReceipt>, I>>(object: I): TransactionReceipt {
     const message = createBaseTransactionReceipt();
-    message.blobGasUsed = (object.blobGasUsed !== undefined && object.blobGasUsed !== null)
-      ? BigInt.fromPartial(object.blobGasUsed)
-      : undefined;
+    message.blobGasUsed = object.blobGasUsed ?? undefined;
     message.blockHash = object.blockHash ?? "";
     message.blockNumber = object.blockNumber ?? 0;
     message.contractAddress = object.contractAddress ?? undefined;
-    message.cumulativeGasUsed = (object.cumulativeGasUsed !== undefined && object.cumulativeGasUsed !== null)
-      ? BigInt.fromPartial(object.cumulativeGasUsed)
-      : undefined;
-    message.effectiveGasPrice = (object.effectiveGasPrice !== undefined && object.effectiveGasPrice !== null)
-      ? BigInt.fromPartial(object.effectiveGasPrice)
-      : undefined;
+    message.cumulativeGasUsed = object.cumulativeGasUsed ?? 0;
+    message.effectiveGasPrice = object.effectiveGasPrice ?? 0;
     message.from = object.from ?? "";
-    message.gasUsed = (object.gasUsed !== undefined && object.gasUsed !== null)
-      ? BigInt.fromPartial(object.gasUsed)
-      : undefined;
+    message.gasUsed = object.gasUsed ?? 0;
     message.logs = object.logs?.map((e) => TransactionLog.fromPartial(e)) || [];
     message.logsBloom = object.logsBloom ?? "";
     message.root = object.root ?? undefined;
@@ -2139,31 +2069,6 @@ const gt: any = (() => {
   }
   throw "Unable to locate global object";
 })();
-
-function bytesFromBase64(b64: string): Uint8Array {
-  if ((gt as any).Buffer) {
-    return Uint8Array.from(gt.Buffer.from(b64, "base64"));
-  } else {
-    const bin = gt.atob(b64);
-    const arr = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; ++i) {
-      arr[i] = bin.charCodeAt(i);
-    }
-    return arr;
-  }
-}
-
-function base64FromBytes(arr: Uint8Array): string {
-  if ((gt as any).Buffer) {
-    return gt.Buffer.from(arr).toString("base64");
-  } else {
-    const bin: string[] = [];
-    arr.forEach((byte) => {
-      bin.push(gt.String.fromCharCode(byte));
-    });
-    return gt.btoa(bin.join(""));
-  }
-}
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
