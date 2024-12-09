@@ -80,10 +80,6 @@ message TransactionEvent {
   TransactionReceipt receipt = 8;
 }
 
-message BigInt {
-  bytes bytes = 1;
-}
-
 message TransactionLog {
   string address = 1;
   repeated string topics = 2;
@@ -97,14 +93,14 @@ message TransactionLog {
 }
 
 message TransactionReceipt {
-  optional BigInt blobGasUsed = 1;
+  optional uint64 blobGasUsed = 1;
   string blockHash = 2;
   uint64 blockNumber = 3;
   optional string contractAddress = 4;
-  BigInt cumulativeGasUsed = 5;
-  BigInt effectiveGasPrice = 6;
+  uint64 cumulativeGasUsed = 5;
+  uint64 effectiveGasPrice = 6;
   string from = 7;
-  BigInt gasUsed = 8;
+  uint64 gasUsed = 8;
   repeated TransactionLog logs = 9;
   string logsBloom = 10;
   optional string root = 11;
