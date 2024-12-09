@@ -70,24 +70,47 @@ message TransactionEvent {
     string maxPriorityFeePerGas = 14;
   }
 
-  message Log {
-    string address = 1;
-    repeated string topics = 2;
-    string data = 3;
-    string blockNumber = 4;
-    string transactionHash = 5;
-    string transactionIndex = 6;
-    string blockHash = 7;
-    string logIndex = 8;
-    bool removed = 9;
-  }
-
   Transaction transaction = 1;
   Network network = 2;
   map<string, bool> addresses = 3;
   Block block = 4;
-  repeated Log logs = 5;
-  bool isContractDeployment = 6;
-  string contractAddress = 7;
-  map<string, bool> txAddresses = 8;
+  bool isContractDeployment = 5;
+  string contractAddress = 6;
+  map<string, bool> txAddresses = 7;
+  TransactionReceipt receipt = 8;
+}
+
+message BigInt {
+  bytes bytes = 1;
+}
+
+message TransactionLog {
+  string address = 1;
+  repeated string topics = 2;
+  string data = 3;
+  string blockNumber = 4;
+  string transactionHash = 5;
+  string transactionIndex = 6;
+  string blockHash = 7;
+  string logIndex = 8;
+  bool removed = 9;
+}
+
+message TransactionReceipt {
+  optional BigInt blobGasUsed = 1;
+  string blockHash = 2;
+  uint64 blockNumber = 3;
+  optional string contractAddress = 4;
+  BigInt cumulativeGasUsed = 5;
+  BigInt effectiveGasPrice = 6;
+  string from = 7;
+  BigInt gasUsed = 8;
+  repeated TransactionLog logs = 9;
+  string logsBloom = 10;
+  optional string root = 11;
+  string status = 12;
+  string to = 13;
+  string transactionHash = 14;
+  uint64 transactionIndex = 15;
+  string type = 16;
 }
