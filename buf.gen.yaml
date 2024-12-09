@@ -7,5 +7,6 @@ plugins:
     opt: paths=source_relative
   - remote: buf.build/community/stephenh-ts-proto
     out: pkg/ts
+    opt: globalThisPolyfill=true
 inputs:
   - directory: ./src
