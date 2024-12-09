@@ -49,10 +49,10 @@ export interface TransactionEvent {
   network: TransactionEvent_Network | undefined;
   addresses: { [key: string]: boolean };
   block: TransactionEvent_Block | undefined;
-  logs: TransactionEvent_Log[];
   isContractDeployment: boolean;
   contractAddress: string;
   txAddresses: { [key: string]: boolean };
+  receipt: TransactionReceipt | undefined;
 }
 
 export interface TransactionEvent_Network {
@@ -83,7 +83,21 @@ export interface TransactionEvent_Transaction {
   maxPriorityFeePerGas: string;
 }
 
-export interface TransactionEvent_Log {
+export interface TransactionEvent_AddressesEntry {
+  key: string;
+  value: boolean;
+}
+
+export interface TransactionEvent_TxAddressesEntry {
+  key: string;
+  value: boolean;
+}
+
+export interface BigInt {
+  bytes: Uint8Array;
+}
+
+export interface TransactionLog {
   address: string;
   topics: string[];
   data: string;
@@ -95,14 +109,23 @@ export interface TransactionEvent_Log {
   removed: boolean;
 }
 
-export interface TransactionEvent_AddressesEntry {
-  key: string;
-  value: boolean;
-}
-
-export interface TransactionEvent_TxAddressesEntry {
-  key: string;
-  value: boolean;
+export interface TransactionReceipt {
+  blobGasUsed?: BigInt | undefined;
+  blockHash: string;
+  blockNumber: number;
+  contractAddress?: string | undefined;
+  cumulativeGasUsed: BigInt | undefined;
+  effectiveGasPrice: BigInt | undefined;
+  from: string;
+  gasUsed: BigInt | undefined;
+  logs: TransactionLog[];
+  logsBloom: string;
+  root?: string | undefined;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string;
 }
 
 function createBaseBlockEvent(): BlockEvent {
@@ -176,8 +199,8 @@ export const BlockEvent: MessageFns<BlockEvent> = {
 
   fromJSON(object: any): BlockEvent {
     return {
-      blockHash: isSet(object.blockHash) ? globalThis.String(object.blockHash) : "",
-      blockNumber: isSet(object.blockNumber) ? globalThis.String(object.blockNumber) : "",
+      blockHash: isSet(object.blockHash) ? gt.String(object.blockHash) : "",
+      blockNumber: isSet(object.blockNumber) ? gt.String(object.blockNumber) : "",
       network: isSet(object.network) ? BlockEvent_Network.fromJSON(object.network) : undefined,
       block: isSet(object.block) ? BlockEvent_Block.fromJSON(object.block) : undefined,
     };
@@ -254,7 +277,7 @@ export const BlockEvent_Network: MessageFns<BlockEvent_Network> = {
   },
 
   fromJSON(object: any): BlockEvent_Network {
-    return { chainId: isSet(object.chainId) ? globalThis.String(object.chainId) : "" };
+    return { chainId: isSet(object.chainId) ? gt.String(object.chainId) : "" };
   },
 
   toJSON(message: BlockEvent_Network): unknown {
@@ -555,29 +578,27 @@ export const BlockEvent_Block: MessageFns<BlockEvent_Block> = {
 
   fromJSON(object: any): BlockEvent_Block {
     return {
-      difficulty: isSet(object.difficulty) ? globalThis.String(object.difficulty) : "",
-      extraData: isSet(object.extraData) ? globalThis.String(object.extraData) : "",
-      gasLimit: isSet(object.gasLimit) ? globalThis.String(object.gasLimit) : "",
-      gasUsed: isSet(object.gasUsed) ? globalThis.String(object.gasUsed) : "",
-      hash: isSet(object.hash) ? globalThis.String(object.hash) : "",
-      logsBloom: isSet(object.logsBloom) ? globalThis.String(object.logsBloom) : "",
-      miner: isSet(object.miner) ? globalThis.String(object.miner) : "",
-      mixHash: isSet(object.mixHash) ? globalThis.String(object.mixHash) : "",
-      nonce: isSet(object.nonce) ? globalThis.String(object.nonce) : "",
-      number: isSet(object.number) ? globalThis.String(object.number) : "",
-      parentHash: isSet(object.parentHash) ? globalThis.String(object.parentHash) : "",
-      receiptsRoot: isSet(object.receiptsRoot) ? globalThis.String(object.receiptsRoot) : "",
-      sha3Uncles: isSet(object.sha3Uncles) ? globalThis.String(object.sha3Uncles) : "",
-      size: isSet(object.size) ? globalThis.String(object.size) : "",
-      stateRoot: isSet(object.stateRoot) ? globalThis.String(object.stateRoot) : "",
-      timestamp: isSet(object.timestamp) ? globalThis.String(object.timestamp) : "",
-      totalDifficulty: isSet(object.totalDifficulty) ? globalThis.String(object.totalDifficulty) : "",
-      transactions: globalThis.Array.isArray(object?.transactions)
-        ? object.transactions.map((e: any) => globalThis.String(e))
-        : [],
-      transactionsRoot: isSet(object.transactionsRoot) ? globalThis.String(object.transactionsRoot) : "",
-      uncles: globalThis.Array.isArray(object?.uncles) ? object.uncles.map((e: any) => globalThis.String(e)) : [],
-      baseFeePerGas: isSet(object.baseFeePerGas) ? globalThis.String(object.baseFeePerGas) : "",
+      difficulty: isSet(object.difficulty) ? gt.String(object.difficulty) : "",
+      extraData: isSet(object.extraData) ? gt.String(object.extraData) : "",
+      gasLimit: isSet(object.gasLimit) ? gt.String(object.gasLimit) : "",
+      gasUsed: isSet(object.gasUsed) ? gt.String(object.gasUsed) : "",
+      hash: isSet(object.hash) ? gt.String(object.hash) : "",
+      logsBloom: isSet(object.logsBloom) ? gt.String(object.logsBloom) : "",
+      miner: isSet(object.miner) ? gt.String(object.miner) : "",
+      mixHash: isSet(object.mixHash) ? gt.String(object.mixHash) : "",
+      nonce: isSet(object.nonce) ? gt.String(object.nonce) : "",
+      number: isSet(object.number) ? gt.String(object.number) : "",
+      parentHash: isSet(object.parentHash) ? gt.String(object.parentHash) : "",
+      receiptsRoot: isSet(object.receiptsRoot) ? gt.String(object.receiptsRoot) : "",
+      sha3Uncles: isSet(object.sha3Uncles) ? gt.String(object.sha3Uncles) : "",
+      size: isSet(object.size) ? gt.String(object.size) : "",
+      stateRoot: isSet(object.stateRoot) ? gt.String(object.stateRoot) : "",
+      timestamp: isSet(object.timestamp) ? gt.String(object.timestamp) : "",
+      totalDifficulty: isSet(object.totalDifficulty) ? gt.String(object.totalDifficulty) : "",
+      transactions: gt.Array.isArray(object?.transactions) ? object.transactions.map((e: any) => gt.String(e)) : [],
+      transactionsRoot: isSet(object.transactionsRoot) ? gt.String(object.transactionsRoot) : "",
+      uncles: gt.Array.isArray(object?.uncles) ? object.uncles.map((e: any) => gt.String(e)) : [],
+      baseFeePerGas: isSet(object.baseFeePerGas) ? gt.String(object.baseFeePerGas) : "",
     };
   },
 
@@ -685,10 +706,10 @@ function createBaseTransactionEvent(): TransactionEvent {
     network: undefined,
     addresses: {},
     block: undefined,
-    logs: [],
     isContractDeployment: false,
     contractAddress: "",
     txAddresses: {},
+    receipt: undefined,
   };
 }
 
@@ -706,18 +727,18 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
     if (message.block !== undefined) {
       TransactionEvent_Block.encode(message.block, writer.uint32(34).fork()).join();
     }
-    for (const v of message.logs) {
-      TransactionEvent_Log.encode(v!, writer.uint32(42).fork()).join();
-    }
     if (message.isContractDeployment !== false) {
-      writer.uint32(48).bool(message.isContractDeployment);
+      writer.uint32(40).bool(message.isContractDeployment);
     }
     if (message.contractAddress !== "") {
-      writer.uint32(58).string(message.contractAddress);
+      writer.uint32(50).string(message.contractAddress);
     }
     Object.entries(message.txAddresses).forEach(([key, value]) => {
-      TransactionEvent_TxAddressesEntry.encode({ key: key as any, value }, writer.uint32(66).fork()).join();
+      TransactionEvent_TxAddressesEntry.encode({ key: key as any, value }, writer.uint32(58).fork()).join();
     });
+    if (message.receipt !== undefined) {
+      TransactionReceipt.encode(message.receipt, writer.uint32(66).fork()).join();
+    }
     return writer;
   },
 
@@ -764,19 +785,19 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
           continue;
         }
         case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
-          message.logs.push(TransactionEvent_Log.decode(reader, reader.uint32()));
-          continue;
-        }
-        case 6: {
-          if (tag !== 48) {
+          if (tag !== 40) {
             break;
           }
 
           message.isContractDeployment = reader.bool();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.contractAddress = reader.string();
           continue;
         }
         case 7: {
@@ -784,7 +805,10 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
             break;
           }
 
-          message.contractAddress = reader.string();
+          const entry7 = TransactionEvent_TxAddressesEntry.decode(reader, reader.uint32());
+          if (entry7.value !== undefined) {
+            message.txAddresses[entry7.key] = entry7.value;
+          }
           continue;
         }
         case 8: {
@@ -792,10 +816,7 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
             break;
           }
 
-          const entry8 = TransactionEvent_TxAddressesEntry.decode(reader, reader.uint32());
-          if (entry8.value !== undefined) {
-            message.txAddresses[entry8.key] = entry8.value;
-          }
+          message.receipt = TransactionReceipt.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -818,17 +839,15 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
         }, {})
         : {},
       block: isSet(object.block) ? TransactionEvent_Block.fromJSON(object.block) : undefined,
-      logs: globalThis.Array.isArray(object?.logs) ? object.logs.map((e: any) => TransactionEvent_Log.fromJSON(e)) : [],
-      isContractDeployment: isSet(object.isContractDeployment)
-        ? globalThis.Boolean(object.isContractDeployment)
-        : false,
-      contractAddress: isSet(object.contractAddress) ? globalThis.String(object.contractAddress) : "",
+      isContractDeployment: isSet(object.isContractDeployment) ? gt.Boolean(object.isContractDeployment) : false,
+      contractAddress: isSet(object.contractAddress) ? gt.String(object.contractAddress) : "",
       txAddresses: isObject(object.txAddresses)
         ? Object.entries(object.txAddresses).reduce<{ [key: string]: boolean }>((acc, [key, value]) => {
           acc[key] = Boolean(value);
           return acc;
         }, {})
         : {},
+      receipt: isSet(object.receipt) ? TransactionReceipt.fromJSON(object.receipt) : undefined,
     };
   },
 
@@ -852,9 +871,6 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
     if (message.block !== undefined) {
       obj.block = TransactionEvent_Block.toJSON(message.block);
     }
-    if (message.logs?.length) {
-      obj.logs = message.logs.map((e) => TransactionEvent_Log.toJSON(e));
-    }
     if (message.isContractDeployment !== false) {
       obj.isContractDeployment = message.isContractDeployment;
     }
@@ -869,6 +885,9 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
           obj.txAddresses[k] = v;
         });
       }
+    }
+    if (message.receipt !== undefined) {
+      obj.receipt = TransactionReceipt.toJSON(message.receipt);
     }
     return obj;
   },
@@ -887,7 +906,7 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
     message.addresses = Object.entries(object.addresses ?? {}).reduce<{ [key: string]: boolean }>(
       (acc, [key, value]) => {
         if (value !== undefined) {
-          acc[key] = globalThis.Boolean(value);
+          acc[key] = gt.Boolean(value);
         }
         return acc;
       },
@@ -896,18 +915,20 @@ export const TransactionEvent: MessageFns<TransactionEvent> = {
     message.block = (object.block !== undefined && object.block !== null)
       ? TransactionEvent_Block.fromPartial(object.block)
       : undefined;
-    message.logs = object.logs?.map((e) => TransactionEvent_Log.fromPartial(e)) || [];
     message.isContractDeployment = object.isContractDeployment ?? false;
     message.contractAddress = object.contractAddress ?? "";
     message.txAddresses = Object.entries(object.txAddresses ?? {}).reduce<{ [key: string]: boolean }>(
       (acc, [key, value]) => {
         if (value !== undefined) {
-          acc[key] = globalThis.Boolean(value);
+          acc[key] = gt.Boolean(value);
         }
         return acc;
       },
       {},
     );
+    message.receipt = (object.receipt !== undefined && object.receipt !== null)
+      ? TransactionReceipt.fromPartial(object.receipt)
+      : undefined;
     return message;
   },
 };
@@ -949,7 +970,7 @@ export const TransactionEvent_Network: MessageFns<TransactionEvent_Network> = {
   },
 
   fromJSON(object: any): TransactionEvent_Network {
-    return { chainId: isSet(object.chainId) ? globalThis.String(object.chainId) : "" };
+    return { chainId: isSet(object.chainId) ? gt.String(object.chainId) : "" };
   },
 
   toJSON(message: TransactionEvent_Network): unknown {
@@ -1041,10 +1062,10 @@ export const TransactionEvent_Block: MessageFns<TransactionEvent_Block> = {
 
   fromJSON(object: any): TransactionEvent_Block {
     return {
-      blockHash: isSet(object.blockHash) ? globalThis.String(object.blockHash) : "",
-      blockNumber: isSet(object.blockNumber) ? globalThis.String(object.blockNumber) : "",
-      blockTimestamp: isSet(object.blockTimestamp) ? globalThis.String(object.blockTimestamp) : "",
-      baseFeePerGas: isSet(object.baseFeePerGas) ? globalThis.String(object.baseFeePerGas) : "",
+      blockHash: isSet(object.blockHash) ? gt.String(object.blockHash) : "",
+      blockNumber: isSet(object.blockNumber) ? gt.String(object.blockNumber) : "",
+      blockTimestamp: isSet(object.blockTimestamp) ? gt.String(object.blockTimestamp) : "",
+      baseFeePerGas: isSet(object.baseFeePerGas) ? gt.String(object.baseFeePerGas) : "",
     };
   },
 
@@ -1274,20 +1295,20 @@ export const TransactionEvent_Transaction: MessageFns<TransactionEvent_Transacti
 
   fromJSON(object: any): TransactionEvent_Transaction {
     return {
-      type: isSet(object.type) ? globalThis.String(object.type) : "",
-      nonce: isSet(object.nonce) ? globalThis.String(object.nonce) : "",
-      gasPrice: isSet(object.gasPrice) ? globalThis.String(object.gasPrice) : "",
-      gas: isSet(object.gas) ? globalThis.String(object.gas) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
-      input: isSet(object.input) ? globalThis.String(object.input) : "",
-      v: isSet(object.v) ? globalThis.String(object.v) : "",
-      r: isSet(object.r) ? globalThis.String(object.r) : "",
-      s: isSet(object.s) ? globalThis.String(object.s) : "",
-      to: isSet(object.to) ? globalThis.String(object.to) : "",
-      hash: isSet(object.hash) ? globalThis.String(object.hash) : "",
-      from: isSet(object.from) ? globalThis.String(object.from) : "",
-      maxFeePerGas: isSet(object.maxFeePerGas) ? globalThis.String(object.maxFeePerGas) : "",
-      maxPriorityFeePerGas: isSet(object.maxPriorityFeePerGas) ? globalThis.String(object.maxPriorityFeePerGas) : "",
+      type: isSet(object.type) ? gt.String(object.type) : "",
+      nonce: isSet(object.nonce) ? gt.String(object.nonce) : "",
+      gasPrice: isSet(object.gasPrice) ? gt.String(object.gasPrice) : "",
+      gas: isSet(object.gas) ? gt.String(object.gas) : "",
+      value: isSet(object.value) ? gt.String(object.value) : "",
+      input: isSet(object.input) ? gt.String(object.input) : "",
+      v: isSet(object.v) ? gt.String(object.v) : "",
+      r: isSet(object.r) ? gt.String(object.r) : "",
+      s: isSet(object.s) ? gt.String(object.s) : "",
+      to: isSet(object.to) ? gt.String(object.to) : "",
+      hash: isSet(object.hash) ? gt.String(object.hash) : "",
+      from: isSet(object.from) ? gt.String(object.from) : "",
+      maxFeePerGas: isSet(object.maxFeePerGas) ? gt.String(object.maxFeePerGas) : "",
+      maxPriorityFeePerGas: isSet(object.maxPriorityFeePerGas) ? gt.String(object.maxPriorityFeePerGas) : "",
     };
   },
 
@@ -1361,7 +1382,223 @@ export const TransactionEvent_Transaction: MessageFns<TransactionEvent_Transacti
   },
 };
 
-function createBaseTransactionEvent_Log(): TransactionEvent_Log {
+function createBaseTransactionEvent_AddressesEntry(): TransactionEvent_AddressesEntry {
+  return { key: "", value: false };
+}
+
+export const TransactionEvent_AddressesEntry: MessageFns<TransactionEvent_AddressesEntry> = {
+  encode(message: TransactionEvent_AddressesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== false) {
+      writer.uint32(16).bool(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TransactionEvent_AddressesEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransactionEvent_AddressesEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.value = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TransactionEvent_AddressesEntry {
+    return {
+      key: isSet(object.key) ? gt.String(object.key) : "",
+      value: isSet(object.value) ? gt.Boolean(object.value) : false,
+    };
+  },
+
+  toJSON(message: TransactionEvent_AddressesEntry): unknown {
+    const obj: any = {};
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== false) {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionEvent_AddressesEntry>, I>>(base?: I): TransactionEvent_AddressesEntry {
+    return TransactionEvent_AddressesEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TransactionEvent_AddressesEntry>, I>>(
+    object: I,
+  ): TransactionEvent_AddressesEntry {
+    const message = createBaseTransactionEvent_AddressesEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? false;
+    return message;
+  },
+};
+
+function createBaseTransactionEvent_TxAddressesEntry(): TransactionEvent_TxAddressesEntry {
+  return { key: "", value: false };
+}
+
+export const TransactionEvent_TxAddressesEntry: MessageFns<TransactionEvent_TxAddressesEntry> = {
+  encode(message: TransactionEvent_TxAddressesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== false) {
+      writer.uint32(16).bool(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TransactionEvent_TxAddressesEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransactionEvent_TxAddressesEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.value = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TransactionEvent_TxAddressesEntry {
+    return {
+      key: isSet(object.key) ? gt.String(object.key) : "",
+      value: isSet(object.value) ? gt.Boolean(object.value) : false,
+    };
+  },
+
+  toJSON(message: TransactionEvent_TxAddressesEntry): unknown {
+    const obj: any = {};
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== false) {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionEvent_TxAddressesEntry>, I>>(
+    base?: I,
+  ): TransactionEvent_TxAddressesEntry {
+    return TransactionEvent_TxAddressesEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TransactionEvent_TxAddressesEntry>, I>>(
+    object: I,
+  ): TransactionEvent_TxAddressesEntry {
+    const message = createBaseTransactionEvent_TxAddressesEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? false;
+    return message;
+  },
+};
+
+function createBaseBigInt(): BigInt {
+  return { bytes: new Uint8Array(0) };
+}
+
+export const BigInt: MessageFns<BigInt> = {
+  encode(message: BigInt, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.bytes.length !== 0) {
+      writer.uint32(10).bytes(message.bytes);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BigInt {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBigInt();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.bytes = reader.bytes();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BigInt {
+    return { bytes: isSet(object.bytes) ? bytesFromBase64(object.bytes) : new Uint8Array(0) };
+  },
+
+  toJSON(message: BigInt): unknown {
+    const obj: any = {};
+    if (message.bytes.length !== 0) {
+      obj.bytes = base64FromBytes(message.bytes);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<BigInt>, I>>(base?: I): BigInt {
+    return BigInt.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<BigInt>, I>>(object: I): BigInt {
+    const message = createBaseBigInt();
+    message.bytes = object.bytes ?? new Uint8Array(0);
+    return message;
+  },
+};
+
+function createBaseTransactionLog(): TransactionLog {
   return {
     address: "",
     topics: [],
@@ -1375,8 +1612,8 @@ function createBaseTransactionEvent_Log(): TransactionEvent_Log {
   };
 }
 
-export const TransactionEvent_Log: MessageFns<TransactionEvent_Log> = {
-  encode(message: TransactionEvent_Log, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const TransactionLog: MessageFns<TransactionLog> = {
+  encode(message: TransactionLog, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -1407,10 +1644,10 @@ export const TransactionEvent_Log: MessageFns<TransactionEvent_Log> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): TransactionEvent_Log {
+  decode(input: BinaryReader | Uint8Array, length?: number): TransactionLog {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTransactionEvent_Log();
+    const message = createBaseTransactionLog();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1495,21 +1732,21 @@ export const TransactionEvent_Log: MessageFns<TransactionEvent_Log> = {
     return message;
   },
 
-  fromJSON(object: any): TransactionEvent_Log {
+  fromJSON(object: any): TransactionLog {
     return {
-      address: isSet(object.address) ? globalThis.String(object.address) : "",
-      topics: globalThis.Array.isArray(object?.topics) ? object.topics.map((e: any) => globalThis.String(e)) : [],
-      data: isSet(object.data) ? globalThis.String(object.data) : "",
-      blockNumber: isSet(object.blockNumber) ? globalThis.String(object.blockNumber) : "",
-      transactionHash: isSet(object.transactionHash) ? globalThis.String(object.transactionHash) : "",
-      transactionIndex: isSet(object.transactionIndex) ? globalThis.String(object.transactionIndex) : "",
-      blockHash: isSet(object.blockHash) ? globalThis.String(object.blockHash) : "",
-      logIndex: isSet(object.logIndex) ? globalThis.String(object.logIndex) : "",
-      removed: isSet(object.removed) ? globalThis.Boolean(object.removed) : false,
+      address: isSet(object.address) ? gt.String(object.address) : "",
+      topics: gt.Array.isArray(object?.topics) ? object.topics.map((e: any) => gt.String(e)) : [],
+      data: isSet(object.data) ? gt.String(object.data) : "",
+      blockNumber: isSet(object.blockNumber) ? gt.String(object.blockNumber) : "",
+      transactionHash: isSet(object.transactionHash) ? gt.String(object.transactionHash) : "",
+      transactionIndex: isSet(object.transactionIndex) ? gt.String(object.transactionIndex) : "",
+      blockHash: isSet(object.blockHash) ? gt.String(object.blockHash) : "",
+      logIndex: isSet(object.logIndex) ? gt.String(object.logIndex) : "",
+      removed: isSet(object.removed) ? gt.Boolean(object.removed) : false,
     };
   },
 
-  toJSON(message: TransactionEvent_Log): unknown {
+  toJSON(message: TransactionLog): unknown {
     const obj: any = {};
     if (message.address !== "") {
       obj.address = message.address;
@@ -1541,11 +1778,11 @@ export const TransactionEvent_Log: MessageFns<TransactionEvent_Log> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<TransactionEvent_Log>, I>>(base?: I): TransactionEvent_Log {
-    return TransactionEvent_Log.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<TransactionLog>, I>>(base?: I): TransactionLog {
+    return TransactionLog.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<TransactionEvent_Log>, I>>(object: I): TransactionEvent_Log {
-    const message = createBaseTransactionEvent_Log();
+  fromPartial<I extends Exact<DeepPartial<TransactionLog>, I>>(object: I): TransactionLog {
+    const message = createBaseTransactionLog();
     message.address = object.address ?? "";
     message.topics = object.topics?.map((e) => e) || [];
     message.data = object.data ?? "";
@@ -1559,25 +1796,84 @@ export const TransactionEvent_Log: MessageFns<TransactionEvent_Log> = {
   },
 };
 
-function createBaseTransactionEvent_AddressesEntry(): TransactionEvent_AddressesEntry {
-  return { key: "", value: false };
+function createBaseTransactionReceipt(): TransactionReceipt {
+  return {
+    blobGasUsed: undefined,
+    blockHash: "",
+    blockNumber: 0,
+    contractAddress: undefined,
+    cumulativeGasUsed: undefined,
+    effectiveGasPrice: undefined,
+    from: "",
+    gasUsed: undefined,
+    logs: [],
+    logsBloom: "",
+    root: undefined,
+    status: "",
+    to: "",
+    transactionHash: "",
+    transactionIndex: 0,
+    type: "",
+  };
 }
 
-export const TransactionEvent_AddressesEntry: MessageFns<TransactionEvent_AddressesEntry> = {
-  encode(message: TransactionEvent_AddressesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
+export const TransactionReceipt: MessageFns<TransactionReceipt> = {
+  encode(message: TransactionReceipt, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.blobGasUsed !== undefined) {
+      BigInt.encode(message.blobGasUsed, writer.uint32(10).fork()).join();
     }
-    if (message.value !== false) {
-      writer.uint32(16).bool(message.value);
+    if (message.blockHash !== "") {
+      writer.uint32(18).string(message.blockHash);
+    }
+    if (message.blockNumber !== 0) {
+      writer.uint32(24).uint64(message.blockNumber);
+    }
+    if (message.contractAddress !== undefined) {
+      writer.uint32(34).string(message.contractAddress);
+    }
+    if (message.cumulativeGasUsed !== undefined) {
+      BigInt.encode(message.cumulativeGasUsed, writer.uint32(42).fork()).join();
+    }
+    if (message.effectiveGasPrice !== undefined) {
+      BigInt.encode(message.effectiveGasPrice, writer.uint32(50).fork()).join();
+    }
+    if (message.from !== "") {
+      writer.uint32(58).string(message.from);
+    }
+    if (message.gasUsed !== undefined) {
+      BigInt.encode(message.gasUsed, writer.uint32(66).fork()).join();
+    }
+    for (const v of message.logs) {
+      TransactionLog.encode(v!, writer.uint32(74).fork()).join();
+    }
+    if (message.logsBloom !== "") {
+      writer.uint32(82).string(message.logsBloom);
+    }
+    if (message.root !== undefined) {
+      writer.uint32(90).string(message.root);
+    }
+    if (message.status !== "") {
+      writer.uint32(98).string(message.status);
+    }
+    if (message.to !== "") {
+      writer.uint32(106).string(message.to);
+    }
+    if (message.transactionHash !== "") {
+      writer.uint32(114).string(message.transactionHash);
+    }
+    if (message.transactionIndex !== 0) {
+      writer.uint32(120).uint64(message.transactionIndex);
+    }
+    if (message.type !== "") {
+      writer.uint32(130).string(message.type);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): TransactionEvent_AddressesEntry {
+  decode(input: BinaryReader | Uint8Array, length?: number): TransactionReceipt {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTransactionEvent_AddressesEntry();
+    const message = createBaseTransactionReceipt();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1586,15 +1882,127 @@ export const TransactionEvent_AddressesEntry: MessageFns<TransactionEvent_Addres
             break;
           }
 
-          message.key = reader.string();
+          message.blobGasUsed = BigInt.decode(reader, reader.uint32());
           continue;
         }
         case 2: {
-          if (tag !== 16) {
+          if (tag !== 18) {
             break;
           }
 
-          message.value = reader.bool();
+          message.blockHash = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.blockNumber = longToNumber(reader.uint64());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.contractAddress = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.cumulativeGasUsed = BigInt.decode(reader, reader.uint32());
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.effectiveGasPrice = BigInt.decode(reader, reader.uint32());
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.from = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.gasUsed = BigInt.decode(reader, reader.uint32());
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.logs.push(TransactionLog.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.logsBloom = reader.string();
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.root = reader.string();
+          continue;
+        }
+        case 12: {
+          if (tag !== 98) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 13: {
+          if (tag !== 106) {
+            break;
+          }
+
+          message.to = reader.string();
+          continue;
+        }
+        case 14: {
+          if (tag !== 114) {
+            break;
+          }
+
+          message.transactionHash = reader.string();
+          continue;
+        }
+        case 15: {
+          if (tag !== 120) {
+            break;
+          }
+
+          message.transactionIndex = longToNumber(reader.uint64());
+          continue;
+        }
+        case 16: {
+          if (tag !== 130) {
+            break;
+          }
+
+          message.type = reader.string();
           continue;
         }
       }
@@ -1606,116 +2014,156 @@ export const TransactionEvent_AddressesEntry: MessageFns<TransactionEvent_Addres
     return message;
   },
 
-  fromJSON(object: any): TransactionEvent_AddressesEntry {
+  fromJSON(object: any): TransactionReceipt {
     return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? globalThis.Boolean(object.value) : false,
+      blobGasUsed: isSet(object.blobGasUsed) ? BigInt.fromJSON(object.blobGasUsed) : undefined,
+      blockHash: isSet(object.blockHash) ? gt.String(object.blockHash) : "",
+      blockNumber: isSet(object.blockNumber) ? gt.Number(object.blockNumber) : 0,
+      contractAddress: isSet(object.contractAddress) ? gt.String(object.contractAddress) : undefined,
+      cumulativeGasUsed: isSet(object.cumulativeGasUsed) ? BigInt.fromJSON(object.cumulativeGasUsed) : undefined,
+      effectiveGasPrice: isSet(object.effectiveGasPrice) ? BigInt.fromJSON(object.effectiveGasPrice) : undefined,
+      from: isSet(object.from) ? gt.String(object.from) : "",
+      gasUsed: isSet(object.gasUsed) ? BigInt.fromJSON(object.gasUsed) : undefined,
+      logs: gt.Array.isArray(object?.logs) ? object.logs.map((e: any) => TransactionLog.fromJSON(e)) : [],
+      logsBloom: isSet(object.logsBloom) ? gt.String(object.logsBloom) : "",
+      root: isSet(object.root) ? gt.String(object.root) : undefined,
+      status: isSet(object.status) ? gt.String(object.status) : "",
+      to: isSet(object.to) ? gt.String(object.to) : "",
+      transactionHash: isSet(object.transactionHash) ? gt.String(object.transactionHash) : "",
+      transactionIndex: isSet(object.transactionIndex) ? gt.Number(object.transactionIndex) : 0,
+      type: isSet(object.type) ? gt.String(object.type) : "",
     };
   },
 
-  toJSON(message: TransactionEvent_AddressesEntry): unknown {
+  toJSON(message: TransactionReceipt): unknown {
     const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
+    if (message.blobGasUsed !== undefined) {
+      obj.blobGasUsed = BigInt.toJSON(message.blobGasUsed);
     }
-    if (message.value !== false) {
-      obj.value = message.value;
+    if (message.blockHash !== "") {
+      obj.blockHash = message.blockHash;
+    }
+    if (message.blockNumber !== 0) {
+      obj.blockNumber = Math.round(message.blockNumber);
+    }
+    if (message.contractAddress !== undefined) {
+      obj.contractAddress = message.contractAddress;
+    }
+    if (message.cumulativeGasUsed !== undefined) {
+      obj.cumulativeGasUsed = BigInt.toJSON(message.cumulativeGasUsed);
+    }
+    if (message.effectiveGasPrice !== undefined) {
+      obj.effectiveGasPrice = BigInt.toJSON(message.effectiveGasPrice);
+    }
+    if (message.from !== "") {
+      obj.from = message.from;
+    }
+    if (message.gasUsed !== undefined) {
+      obj.gasUsed = BigInt.toJSON(message.gasUsed);
+    }
+    if (message.logs?.length) {
+      obj.logs = message.logs.map((e) => TransactionLog.toJSON(e));
+    }
+    if (message.logsBloom !== "") {
+      obj.logsBloom = message.logsBloom;
+    }
+    if (message.root !== undefined) {
+      obj.root = message.root;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.to !== "") {
+      obj.to = message.to;
+    }
+    if (message.transactionHash !== "") {
+      obj.transactionHash = message.transactionHash;
+    }
+    if (message.transactionIndex !== 0) {
+      obj.transactionIndex = Math.round(message.transactionIndex);
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<TransactionEvent_AddressesEntry>, I>>(base?: I): TransactionEvent_AddressesEntry {
-    return TransactionEvent_AddressesEntry.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<TransactionReceipt>, I>>(base?: I): TransactionReceipt {
+    return TransactionReceipt.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<TransactionEvent_AddressesEntry>, I>>(
-    object: I,
-  ): TransactionEvent_AddressesEntry {
-    const message = createBaseTransactionEvent_AddressesEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? false;
+  fromPartial<I extends Exact<DeepPartial<TransactionReceipt>, I>>(object: I): TransactionReceipt {
+    const message = createBaseTransactionReceipt();
+    message.blobGasUsed = (object.blobGasUsed !== undefined && object.blobGasUsed !== null)
+      ? BigInt.fromPartial(object.blobGasUsed)
+      : undefined;
+    message.blockHash = object.blockHash ?? "";
+    message.blockNumber = object.blockNumber ?? 0;
+    message.contractAddress = object.contractAddress ?? undefined;
+    message.cumulativeGasUsed = (object.cumulativeGasUsed !== undefined && object.cumulativeGasUsed !== null)
+      ? BigInt.fromPartial(object.cumulativeGasUsed)
+      : undefined;
+    message.effectiveGasPrice = (object.effectiveGasPrice !== undefined && object.effectiveGasPrice !== null)
+      ? BigInt.fromPartial(object.effectiveGasPrice)
+      : undefined;
+    message.from = object.from ?? "";
+    message.gasUsed = (object.gasUsed !== undefined && object.gasUsed !== null)
+      ? BigInt.fromPartial(object.gasUsed)
+      : undefined;
+    message.logs = object.logs?.map((e) => TransactionLog.fromPartial(e)) || [];
+    message.logsBloom = object.logsBloom ?? "";
+    message.root = object.root ?? undefined;
+    message.status = object.status ?? "";
+    message.to = object.to ?? "";
+    message.transactionHash = object.transactionHash ?? "";
+    message.transactionIndex = object.transactionIndex ?? 0;
+    message.type = object.type ?? "";
     return message;
   },
 };
 
-function createBaseTransactionEvent_TxAddressesEntry(): TransactionEvent_TxAddressesEntry {
-  return { key: "", value: false };
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const gt: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
+function bytesFromBase64(b64: string): Uint8Array {
+  if ((gt as any).Buffer) {
+    return Uint8Array.from(gt.Buffer.from(b64, "base64"));
+  } else {
+    const bin = gt.atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; ++i) {
+      arr[i] = bin.charCodeAt(i);
+    }
+    return arr;
+  }
 }
 
-export const TransactionEvent_TxAddressesEntry: MessageFns<TransactionEvent_TxAddressesEntry> = {
-  encode(message: TransactionEvent_TxAddressesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== false) {
-      writer.uint32(16).bool(message.value);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): TransactionEvent_TxAddressesEntry {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTransactionEvent_TxAddressesEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.key = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 16) {
-            break;
-          }
-
-          message.value = reader.bool();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): TransactionEvent_TxAddressesEntry {
-    return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? globalThis.Boolean(object.value) : false,
-    };
-  },
-
-  toJSON(message: TransactionEvent_TxAddressesEntry): unknown {
-    const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
-    }
-    if (message.value !== false) {
-      obj.value = message.value;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<TransactionEvent_TxAddressesEntry>, I>>(
-    base?: I,
-  ): TransactionEvent_TxAddressesEntry {
-    return TransactionEvent_TxAddressesEntry.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<TransactionEvent_TxAddressesEntry>, I>>(
-    object: I,
-  ): TransactionEvent_TxAddressesEntry {
-    const message = createBaseTransactionEvent_TxAddressesEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? false;
-    return message;
-  },
-};
+function base64FromBytes(arr: Uint8Array): string {
+  if ((gt as any).Buffer) {
+    return gt.Buffer.from(arr).toString("base64");
+  } else {
+    const bin: string[] = [];
+    arr.forEach((byte) => {
+      bin.push(gt.String.fromCharCode(byte));
+    });
+    return gt.btoa(bin.join(""));
+  }
+}
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -1728,6 +2176,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = gt.Number(int64.toString());
+  if (num > gt.Number.MAX_SAFE_INTEGER) {
+    throw new gt.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < gt.Number.MIN_SAFE_INTEGER) {
+    throw new gt.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isObject(value: any): boolean {
   return typeof value === "object" && value !== null;

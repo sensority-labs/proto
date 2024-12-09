@@ -261,7 +261,7 @@ exports.Finding = {
     },
     fromJSON(object) {
         return {
-            protocol: isSet(object.protocol) ? globalThis.String(object.protocol) : "",
+            protocol: isSet(object.protocol) ? gt.String(object.protocol) : "",
             severity: isSet(object.severity) ? finding_SeverityFromJSON(object.severity) : 0,
             metadata: isObject(object.metadata)
                 ? Object.entries(object.metadata).reduce((acc, [key, value]) => {
@@ -270,11 +270,11 @@ exports.Finding = {
                 }, {})
                 : {},
             type: isSet(object.type) ? finding_FindingTypeFromJSON(object.type) : 0,
-            alertId: isSet(object.alertId) ? globalThis.String(object.alertId) : "",
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            timestamp: isSet(object.timestamp) ? globalThis.String(object.timestamp) : "",
-            uniqueKey: isSet(object.uniqueKey) ? globalThis.String(object.uniqueKey) : "",
+            alertId: isSet(object.alertId) ? gt.String(object.alertId) : "",
+            name: isSet(object.name) ? gt.String(object.name) : "",
+            description: isSet(object.description) ? gt.String(object.description) : "",
+            timestamp: isSet(object.timestamp) ? gt.String(object.timestamp) : "",
+            uniqueKey: isSet(object.uniqueKey) ? gt.String(object.uniqueKey) : "",
             routeInfo: isSet(object.routeInfo) ? exports.RouteInfo.fromJSON(object.routeInfo) : undefined,
         };
     },
@@ -328,7 +328,7 @@ exports.Finding = {
         message.severity = (_b = object.severity) !== null && _b !== void 0 ? _b : 0;
         message.metadata = Object.entries((_c = object.metadata) !== null && _c !== void 0 ? _c : {}).reduce((acc, [key, value]) => {
             if (value !== undefined) {
-                acc[key] = globalThis.String(value);
+                acc[key] = gt.String(value);
             }
             return acc;
         }, {});
@@ -388,8 +388,8 @@ exports.Finding_MetadataEntry = {
     },
     fromJSON(object) {
         return {
-            key: isSet(object.key) ? globalThis.String(object.key) : "",
-            value: isSet(object.value) ? globalThis.String(object.value) : "",
+            key: isSet(object.key) ? gt.String(object.key) : "",
+            value: isSet(object.value) ? gt.String(object.value) : "",
         };
     },
     toJSON(message) {
@@ -457,8 +457,8 @@ exports.RouteInfo = {
     },
     fromJSON(object) {
         return {
-            userName: isSet(object.userName) ? globalThis.String(object.userName) : "",
-            botName: isSet(object.botName) ? globalThis.String(object.botName) : "",
+            userName: isSet(object.userName) ? gt.String(object.userName) : "",
+            botName: isSet(object.botName) ? gt.String(object.botName) : "",
         };
     },
     toJSON(message) {
@@ -482,6 +482,21 @@ exports.RouteInfo = {
         return message;
     },
 };
+const gt = (() => {
+    if (typeof globalThis !== "undefined") {
+        return globalThis;
+    }
+    if (typeof self !== "undefined") {
+        return self;
+    }
+    if (typeof window !== "undefined") {
+        return window;
+    }
+    if (typeof global !== "undefined") {
+        return global;
+    }
+    throw "Unable to locate global object";
+})();
 function isObject(value) {
     return typeof value === "object" && value !== null;
 }
