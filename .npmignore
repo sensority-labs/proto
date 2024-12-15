@@ -1,0 +1,10 @@
+.vscode/*
+.idea/*
+src
+pkg/go
+.github
+node_modules
+buf.gen.yaml
+buf.yaml
+go.mod
+go.sum
